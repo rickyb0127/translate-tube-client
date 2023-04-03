@@ -2,7 +2,7 @@
   <div class="preview-container">
     <div class="video-container" v-for="video, index in videos" :key="index">
       <div class="thumbnail-container" @click="goToWatchVideo">
-        <img class="video-thumbnail" src="api/thumbnail" />
+        <img class="video-thumbnail" :src="thumbnailUrl" />
       </div>
       <div class="detail">
         {{ video.title }}
@@ -16,14 +16,16 @@ export default {
   name: 'PreviewRows',
   data() {
     return {
-      videos: null
+      videos: null,
+      requestUrl: process.env.VUE_APP_ENV === 'local' ? 'http://localhost:8000/' : 'https://translate-tube-api-js-production.up.railway.app/',
+      thumbnailUrl: process.env.VUE_APP_ENV === 'local' ? 'api/thumbnail' : 'https://translate-tube-api-js-production.up.railway.app/api/thumbnail'
     }
   },
   methods: {
     async fetchAllVideos() {
       try {
-        const response = await fetch(`http://localhost:8000/api/videos`);
-        
+        const response = await fetch(`${this.requestUrl}api/videos`);
+
         const responseJson = await response.json();
         return responseJson.data;
       } catch(err) {

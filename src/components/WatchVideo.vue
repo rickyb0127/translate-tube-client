@@ -1,12 +1,17 @@
 <template>
   <div class="video-container">
-    <video class="video-player" autoplay controls src="api/video"></video>
+    <video class="video-player" autoplay controls :src="videoUrl"></video>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'WatchVideo'
+  name: 'WatchVideo',
+  data() {
+    return {
+      videoUrl: process.env.VUE_APP_ENV === 'local' ? 'api/video' : 'https://translate-tube-api-js-production.up.railway.app/api/video'
+    }
+  }
 }
 </script>
 
