@@ -1,6 +1,11 @@
 <template>
   <div class="video-container">
-    <video class="video-player" autoplay controls :src="videoUrl"></video>
+    <video id="video-player" controls muted @playing="playDubbedAudio" @pause="pauseDubbedAudio">
+      <source :src="videoUrl" type="video/mp4" />
+      <audio id="dubbed-audio" controls>
+        <source src="https://s3.us-west-2.amazonaws.com/translate-tube/236b6570-ce42-4686-ab1a-1242ddd25a94.mp3" type="audio/mp3"/>
+      </audio>
+    </video>
   </div>
 </template>
 
@@ -10,6 +15,16 @@ export default {
   data() {
     return {
       videoUrl: process.env.VUE_APP_ENV === 'local' ? 'api/video' : 'https://translate-tube-api-js-production.up.railway.app/api/video'
+    }
+  },
+  methods: {
+    playDubbedAudio() {
+      const dubbedAudio = document.getElementById("dubbed-audio");
+      dubbedAudio.play();
+    },
+    pauseDubbedAudio() {
+      const dubbedAudio = document.getElementById("dubbed-audio");
+      dubbedAudio.pause();
     }
   }
 }
@@ -21,7 +36,7 @@ export default {
   width: 100%;
 }
 
-.video-player {
+#video-player {
   width: 100%;
 }
 </style>
